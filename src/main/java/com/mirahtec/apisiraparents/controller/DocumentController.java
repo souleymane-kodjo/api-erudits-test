@@ -14,12 +14,37 @@ import org.springframework.web.bind.annotation.RestController;
 public class DocumentController {
     @Autowired
     private DocumentService documentService;
-    //Get documents by student matricule
-    @GetMapping("/student/{matricule}")
-    public ResponseEntity<?> getDocumentsByStudentMatricule(@PathVariable String matricule) {
+    //getQuittancesInscriptionByMatricule
+    @GetMapping("/quittances/student/{matricule}")
+    public ResponseEntity<?> getQuittancesInscriptionByMatricule(@PathVariable String matricule) {
         if (matricule == null || matricule.isEmpty()) {
             return ResponseEntity.badRequest().body("Matricule cannot be empty");
         }
-        return documentService.getDocumentsByStudentMatricule(matricule);
+        return documentService.getQuittancesInscriptionByMatricule(matricule);
+    }
+    //getCertificatScolariteByMatricule
+    @GetMapping("/certificat/student/{matricule}")
+    public ResponseEntity<?> getCertificatScolariteByMatricule(@PathVariable String matricule) {
+        return documentService.getCertificatScolariteByMatricule(matricule);
+    }
+    //getEcheancierByMatricule
+    @GetMapping("/echeancier/student/{matricule}")
+    public ResponseEntity<?> getEcheancierByMatricule(@PathVariable String matricule) {
+        return documentService.getEcheancierByMatricule(matricule);
+    }
+    //getDocUploadedElevesByMatricule
+    @GetMapping("/eleves/student/{matricule}")
+    public ResponseEntity<?> getDocUploadedElevesByMatricule(@PathVariable String matricule) {
+        return documentService.getDocUploadedElevesByMatricule(matricule);
+    }
+    //getDocUploadedClassesByIdClasse
+    @GetMapping("/classes/{idClasse}")
+    public ResponseEntity<?> getDocUploadedClassesByIdClasse(@PathVariable String idClasse) {
+        return documentService.getDocUploadedClassesByIdClasse(idClasse);
+    }
+    //getDocUploadedEcole
+    @GetMapping("/ecole")
+    public ResponseEntity<?> getDocUploadedEcole() {
+        return documentService.getDocUploadedEcole();
     }
 }

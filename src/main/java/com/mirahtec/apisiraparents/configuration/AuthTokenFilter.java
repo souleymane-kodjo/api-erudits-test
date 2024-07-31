@@ -26,11 +26,11 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     @Autowired
     @Qualifier("customUserDetailsService")
     private UserDetailsService userDetailsService;
-    private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        logger.debug("AuthTokenFilter called for URI: {}",request.getRequestURI());
+
     try {
         String jwt = parseJwt(request);
         if (jwt!=null&&jwtUtils.validateJwtToken(jwt)) {
@@ -44,15 +44,13 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
     }catch (Exception e) {
-        e.printStackTrace();
-
+        //throw new RuntimeException("Cannot set user authentication: "+e.getMessage());
     }
     filterChain.doFilter(request,response);
     }
 
     private String parseJwt(HttpServletRequest request) {
         String jwt = jwtUtils.getJwtFromHeader(request);
-
         return jwt;
     }
 

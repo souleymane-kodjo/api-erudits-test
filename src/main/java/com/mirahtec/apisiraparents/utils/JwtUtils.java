@@ -9,6 +9,7 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import java.util.Date;
 import java.util.List;
 
 @Component
+@Slf4j
 public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
     @Value("${spring.app.jwtSecret}")
@@ -79,9 +81,9 @@ public class JwtUtils {
             Jwts.parser().verifyWith((SecretKey) key()).build().parseSignedClaims(authToken);
             return true;
         } catch (MalformedJwtException | IllegalArgumentException | UnsupportedJwtException e) {
-            e.printStackTrace();
+            logger.error("Invalid JWT token: {}", e.getMessage());
         } catch (ExpiredJwtException e) {
-            e.printStackTrace();
+            logger.error("JWT token is expired: {}", e.getMessage());
         }
         return false;
     }
@@ -104,7 +106,7 @@ public class JwtUtils {
         } catch (ExpiredJwtException e) {
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Error checking token expiration: {}", e.getMessage());
             return false;
         }
     }
