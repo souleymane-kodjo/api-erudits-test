@@ -167,7 +167,7 @@ public class AuthService {
             return ResponseEntity.ok(response);
         }
         catch (AuthenticationException e){
-            e.printStackTrace();
+            //e.printStackTrace();
             Map<String, Object> map = new HashMap<>();
             map.put("status", false);
             map.put("message", "Username or password incorrect");
@@ -177,7 +177,7 @@ public class AuthService {
         }
         //invalid token
         catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             Map<String, Object> map = new HashMap<>();
             map.put("status", false);
             map.put("message", "Internal server error");
@@ -207,11 +207,11 @@ public class AuthService {
         //
         //Sql exceptio DataAccessException
         catch (DataAccessException e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Database error"));
         }
         catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Internal server error"));
         }
     }

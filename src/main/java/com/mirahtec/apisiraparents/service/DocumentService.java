@@ -1,9 +1,12 @@
 package com.mirahtec.apisiraparents.service;
 
 import com.mirahtec.apisiraparents.dao.impl.DocumentJDBCDaoImpl;
+import com.mirahtec.apisiraparents.model.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class DocumentService {
@@ -21,7 +24,6 @@ public class DocumentService {
             return ResponseEntity.badRequest().body("An error occurred while fetching documents");
         }
     }
-//getCertificatScolariteByMatricule
     public ResponseEntity<?> getCertificatScolariteByMatricule(String matricule) {
         try {
             if (matricule == null || matricule.isEmpty()) {
@@ -45,7 +47,7 @@ public class DocumentService {
             return ResponseEntity.badRequest().body("An error occurred while fetching documents");
         }
     }
-//getDocUploadedElevesByMatricule
+
     public ResponseEntity<?> getDocUploadedElevesByMatricule(String matricule) {
         try {
             if (matricule == null || matricule.isEmpty()) {
@@ -58,21 +60,25 @@ public class DocumentService {
         }
     }
 //getDocUploadedClassesByIdClasse
-    public ResponseEntity<?> getDocUploadedClassesByIdClasse(String idClasse) {
-        try {
-            if (idClasse == null || idClasse.isEmpty()) {
-                return ResponseEntity.badRequest().body("Id Classe cannot be empty");
-            }
-            return ResponseEntity.ok(documentJDBCDao.getDocUploadedClassesByIdClasse(idClasse));
-        }catch (Exception e){
-            e.printStackTrace();
-            return ResponseEntity.badRequest().body("An error occurred while fetching documents");
-        }
+    public List<Document> getDocUploadedClassesByIdClasse(String idClasse) {
+        return documentJDBCDao.getDocUploadedClassesByIdClasse(idClasse);
     }
 //getDocUploadedEcole
     public ResponseEntity<?> getDocUploadedEcole() {
         try {
             return ResponseEntity.ok(documentJDBCDao.getDocUploadedEcole());
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("An error occurred while fetching documents");
+        }
+    }
+
+    public ResponseEntity<?> getDocumentsByMatricule(String matricule) {
+        try {
+            if (matricule == null || matricule.isEmpty()) {
+                return ResponseEntity.badRequest().body("Matricule cannot be empty");
+            }
+            return ResponseEntity.ok(documentJDBCDao.getDocumentsByMatricule(matricule));
         }catch (Exception e){
             e.printStackTrace();
             return ResponseEntity.badRequest().body("An error occurred while fetching documents");

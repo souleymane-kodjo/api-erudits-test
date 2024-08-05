@@ -30,8 +30,6 @@ public class ReportCardController {
 
       List<ReportCard> reportCards = reportCardService.getReportCardsByStudentMatricule(matricule);
         HashMap<String, String> response = new HashMap<>();
-
-
         if (reportCards == null || reportCards.isEmpty()) {
             response.put("message", "Aucun bulletin trouvé pour ce matricule");
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
