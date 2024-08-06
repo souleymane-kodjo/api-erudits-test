@@ -2,6 +2,7 @@ package com.mirahtec.apisiraparents.utils;
 
 import com.mirahtec.apisiraparents.dao.impl.TokenBlacklistJDBCDaoImpl;
 import com.mirahtec.apisiraparents.model.TokenBlacklist;
+import com.mirahtec.apisiraparents.service.UserDetailsServiceCustom;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,6 +35,7 @@ public class JwtUtils {
 
     @Value("${spring.app.jwtExpirationMs}")
     private String jwtExpirationMs;
+
 
 
     @Autowired
@@ -110,4 +113,14 @@ public class JwtUtils {
             return false;
         }
     }
+//
+//    public String refreshToken(String oldToken) {
+//        if (validateJwtToken(oldToken)) {
+//            String username = getUserNameFromJwtToken(oldToken);
+//            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+//            return generateTokenFromUsername(userDetails);
+//        } else {
+//            throw new IllegalArgumentException("Invalid or expired token");
+//        }
+//    }
 }

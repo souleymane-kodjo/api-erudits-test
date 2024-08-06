@@ -13,10 +13,11 @@ import org.springframework.stereotype.Component;
 public class UserParentJDBCDaoImpl implements IUserParentDao {
     @Autowired
     private JdbcTemplate beanJDBCTemplate  ;
-    @Override
-    public AuthUser findByUsername(String username) {
+
+
+    public AuthUser findByUsername(String telephone) {
         String sql = "SELECT * FROM usersParents WHERE telephone = ? LIMIT 1";
-        AuthUser authUser = beanJDBCTemplate.queryForObject(sql, new Object[]{username}, new BeanPropertyRowMapper<>(AuthUser.class));
+        AuthUser authUser = beanJDBCTemplate.queryForObject(sql, new Object[]{telephone}, new BeanPropertyRowMapper<>(AuthUser.class));
         return authUser;
     }
     public AuthUser create(AuthUser authUser) {

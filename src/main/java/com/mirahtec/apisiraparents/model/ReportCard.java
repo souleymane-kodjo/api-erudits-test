@@ -13,7 +13,4 @@ public class ReportCard implements Serializable {
     private String publie;
     private String nom ;
 
-    public String getNom() {
-        return "Fichier Demo";
-    }
 }

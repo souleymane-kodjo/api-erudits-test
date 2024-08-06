@@ -43,13 +43,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @PostConstruct
     public void createUserIfNeeded() {
-        String defaultAdminUsername = "775958693";
+        String defaultAdminUsername = "admin";
         AuthUser existingUser = null  ;
         if (existingUser == null) {
             AuthUser adminUser = new AuthUser();
-            adminUser.setEmail("Mohamed@gmail.com");
-            adminUser.setNom("Mohamed");
-            adminUser.setPrenom("Mohamed");
+            adminUser.setEmail("admin@gmail.com");
+            adminUser.setNom("admin");
+            adminUser.setPrenom("admin");
             adminUser.setTelephone(defaultAdminUsername);
             adminUser.setPassword(passwordEncoderSHA256.encode(defaultAdminUsername)); // replace "adminPassword" with the actual password
             adminUser.setRole("ADMIN");

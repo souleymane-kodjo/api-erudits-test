@@ -16,5 +16,7 @@ public class Class {
     private String nomClasse;
     @Column("idNiveau")
     private int idNiveau;
+    @Column("idSchool")
+    private int idSchool;
 
 }
