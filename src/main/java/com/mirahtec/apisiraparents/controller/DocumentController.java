@@ -24,7 +24,6 @@ public class DocumentController {
         return documentService.getDocumentsByMatricule(matricule);
     }
 
-
     //getQuittancesInscriptionByMatricule
     @GetMapping("/quittances/student/{matricule}")
     public ResponseEntity<?> getQuittancesInscriptionByMatricule(@PathVariable String matricule) {

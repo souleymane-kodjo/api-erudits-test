@@ -51,4 +51,8 @@ public class Student implements Serializable {
     @Column("code_localite")
     @JsonIgnore
     private int codeLocalite;
+
+    @Column("nom_classe")
+    private String nomClasse;
+
 }
