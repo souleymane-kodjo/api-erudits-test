@@ -1,5 +1,6 @@
 package com.mirahtec.apisiraparents.utils;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -7,6 +8,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 @Component
+@Primary
 public class SHA256PasswordEncoder implements PasswordEncoder {
 
     @Override

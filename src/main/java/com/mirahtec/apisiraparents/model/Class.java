@@ -18,5 +18,4 @@ public class Class {
     private int idNiveau;
     @Column("idSchool")
     private int idSchool;
-
 }

@@ -34,6 +34,7 @@ public class SpringSecurityConfig {
                         .requestMatchers("/api/v1/auth/change-password").permitAll()
                         .requestMatchers("/api/v1/auth/login").permitAll()
                         .requestMatchers("/api/v1/auth/logout").permitAll()
+                        .requestMatchers("/api/v1/auth/reset-password").permitAll()
                         .requestMatchers("/api/v1/students/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1/presences/**").hasRole("ADMIN")
                         .requestMatchers("/api/v1/notes/**").hasRole("ADMIN")
@@ -54,8 +55,7 @@ public class SpringSecurityConfig {
                 ))
                 .headers(h->h.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-        return    httpSecurity    .build();
-
+        return    httpSecurity.build();
     }
     @Bean
     public AuthTokenFilter authTokenFilter() {

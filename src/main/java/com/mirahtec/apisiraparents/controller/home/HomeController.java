@@ -1,4 +1,4 @@
-package com.mirahtec.apisiraparents.controller;
+package com.mirahtec.apisiraparents.controller.home;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

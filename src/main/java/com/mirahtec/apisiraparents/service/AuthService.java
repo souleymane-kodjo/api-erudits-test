@@ -100,8 +100,6 @@ public class AuthService {
         String newPassword = changePasswordRequest.getNewPassword();
 
         AuthUser user = userParentJDBCDaoImpl.findByUsername(username);
-        log.info("***********************************************");
-        log.info("User: {}", user);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "User not found"));
         }
@@ -118,9 +116,6 @@ public class AuthService {
     }
 
     public ResponseEntity<?> login(LoginRequest loginRequest, HttpServletRequest requestClient) {
-        log.info("***********************************************");
-
-
         String username = loginRequest.getUsername();
         String password = loginRequest.getPassword();
         //String hashedPassword = HashUtil.hashSha256(password);
@@ -147,32 +142,18 @@ public class AuthService {
 
             journalConnexion.setIpAddress(clientIP);
 
-
-            //Type device requestClient
-            String typeDevice = requestClient.getHeader("User-Agent");
-            if (typeDevice == null){
-                typeDevice = "Unknown";
-            }else{
-                log.info("***********************************************");
-                log.info("deviceType: "+typeDevice);
-            }
-            journalConnexion.setTypeDevice(typeDevice);
-
+            journalConnexion.setTypeDevice("Mobile");
             journalConnexionService.addJournalConnexion(journalConnexion);
             LoginResponse response = new LoginResponse(jwtToken,roles,userDetail.getUsername());
             AuthUser userParent1 = userParentJDBCDaoImpl.findByUsername(username);
             response.setUser(userParent1);
-            log.info("***********************************************");
-            log.info("User authentified successfully");
             return ResponseEntity.ok(response);
         }
         catch (AuthenticationException e){
             //e.printStackTrace();
             Map<String, Object> map = new HashMap<>();
             map.put("status", false);
-            map.put("message", "Username or password incorrect");
-            log.info("***********************************************");
-            log.info("Username or password incorrect");
+            map.put("message", "Mot de passe ou nom d'utilisateur incorrect");
             return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
         }
         //invalid token
@@ -180,7 +161,7 @@ public class AuthService {
             //e.printStackTrace();
             Map<String, Object> map = new HashMap<>();
             map.put("status", false);
-            map.put("message", "Internal server error");
+            map.put("message", "Service indisponible");
             return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -193,14 +174,14 @@ public class AuthService {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Username is required"));
         }
         try {
-            String DefaultPassword = "Mirahtec@2024";
+            String DefaultPassword = "admin";
             String DefaultPasswordHashed = passwordEncoderSHA256.encode(DefaultPassword);
             AuthUser user = userParentJDBCDaoImpl.findByUsername(resetPasswordRequest.getUsername());
             user.setPassword(DefaultPasswordHashed);
             user.setIsActived(false);
             userParentJDBCDaoImpl.updateUser(user);
             ChangePasswordResponse changePasswordResponse = new ChangePasswordResponse();
-            changePasswordResponse.setMessage("Password reset successfully  - User : " + resetPasswordRequest.getUsername());
+            changePasswordResponse.setMessage("Non utilisateur ou mot de passe incorrect : ");
             changePasswordResponse.setStatus(true);
             return ResponseEntity.ok(changePasswordResponse);
         }
@@ -212,7 +193,7 @@ public class AuthService {
         }
         catch (Exception e){
             //e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Internal server error"));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Service indisponible"));
         }
     }
 }

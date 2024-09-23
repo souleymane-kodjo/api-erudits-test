@@ -15,7 +15,6 @@ import java.util.List;
 @Repository
 @Slf4j
 public class QuittanceJDBCDaoImpl {
-
     @Autowired
     private JdbcTemplate beanJDBCTemplate;
 

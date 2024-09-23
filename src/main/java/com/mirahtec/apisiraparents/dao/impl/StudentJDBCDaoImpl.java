@@ -14,6 +14,7 @@ public class StudentJDBCDaoImpl implements IStudentDao {
     @Autowired
     private JdbcTemplate beanJDBCTemplate  ;
 
+
     @Override
     public List<Student> findAll() {
         String sql = "SELECT * FROM eleves24";

@@ -1,4 +1,4 @@
-package com.mirahtec.apisiraparents.controller;
+package com.mirahtec.apisiraparents.controller.auth;
 
 import com.mirahtec.apisiraparents.dto.ChangePasswordRequest;
 import com.mirahtec.apisiraparents.dto.LoginRequest;
@@ -17,14 +17,10 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     @Autowired
     private AuthService authService;
-
-
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpServletRequest requestClient) {
         return authService.login(loginRequest, requestClient);
     }
-
-
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request) {
        return  authService.logout(request);
@@ -34,7 +30,6 @@ public class AuthController {
     public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
         return authService.changePassword(changePasswordRequest);
     }
-
     @PostMapping("/reset-password")
     public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) {
         return authService.resetPassword(resetPasswordRequest);
