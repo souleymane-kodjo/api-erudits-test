@@ -39,8 +39,10 @@ public class ParentController {
 //    }
     @GetMapping("/{parentUsername}/students")
     public ResponseEntity<?> getStudentsByParentUsername(@PathVariable String parentUsername) {
-            String matriculeParent = parentService.getMatriculeParentByParentUsername(parentUsername);
-            List<Student> students = studentService.getStudentsByMatriculeParent(matriculeParent);
+            //String matriculeParent = parentService.getMatriculeParentByParentUsername(parentUsername);
+            //List<Student> students = studentService.getStudentsByMatriculeParent(matriculeParent);
+            List<Student> students = studentService.getStudentsByParentUsername(parentUsername);
+
             return ResponseEntity.ok(students);
     }
 

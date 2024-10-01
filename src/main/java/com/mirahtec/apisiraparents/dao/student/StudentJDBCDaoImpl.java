@@ -34,7 +34,7 @@ public class StudentJDBCDaoImpl implements IStudentDao {
             student.setAnneeScolaire(rs.getString("anneeScolaire"));
             student.setEps(rs.getInt("eps"));
             //student.setCodeLocalite(rs.getInt("code_localite"));
-            student.setMatriculeParent(rs.getString("matriculeParent"));
+            //student.setMatriculeParent(rs.getString("matriculeParent"));
             log.info(student.toString());
             return student;
         });
@@ -42,7 +42,7 @@ public class StudentJDBCDaoImpl implements IStudentDao {
 
     @Override
     public Student getStudentByMatricule(String matricule) {
-        String sql = "SELECT * FROM eleves25 WHERE matricule = ?";
+        String sql = "SELECT * FROM eleves24 WHERE matricule = ?";
         try {
             return beanJDBCTemplate.queryForObject(sql, new Object[]{matricule}, (rs, rowNum) -> {
                 Student student = new Student();
@@ -70,7 +70,7 @@ public class StudentJDBCDaoImpl implements IStudentDao {
         return students;
     }
     public List<Student> findStudentsByMatriculeParent(String matriculeParent) {
-        String sql = "SELECT * FROM eleves25 WHERE matriculeParent = ?";
+        String sql = "SELECT * FROM eleves24 WHERE matriculeParent = ?";
         return beanJDBCTemplate.query(sql, new Object[]{matriculeParent}, (rs, rowNum) -> {
             Student student = new Student();
             student.setId(rs.getLong("id")); // Assuming there's an 'id' colum

@@ -14,21 +14,21 @@ public class UserParentJDBCDaoImpl implements IUserParentDao {
     private JdbcTemplate beanJDBCTemplate  ;
 //    @Override
 //    public AuthUser findByUsername(String telephone) {
-//        String sql = "SELECT * FROM usersParents WHERE telephone = ?  ORDER BY id DESC LIMIT 1";
+//        String sql = "SELECT * FROM usersparents WHERE telephone = ?  ORDER BY id DESC LIMIT 1";
 //        AuthUser authUser = beanJDBCTemplate.queryForObject(sql, new Object[]{telephone}, new BeanPropertyRowMapper<>(AuthUser.class));
 //        log.info("User found: " + authUser);
 //        return authUser;
 //    }
     @Override
     public AuthUser findByUsername(String telephone) {
-        String sql = "SELECT * FROM usersParents WHERE telephone = ?  ORDER BY id DESC LIMIT 1";
+        String sql = "SELECT * FROM usersparents WHERE telephone = ?  ORDER BY id DESC LIMIT 1";
         AuthUser authUser = beanJDBCTemplate.queryForObject(sql, new Object[]{telephone}, new BeanPropertyRowMapper<>(AuthUser.class));
         log.info("User found: " + authUser);
         return authUser;
     }
     @Override
     public AuthUser create(AuthUser authUser) {
-        String sql = "INSERT INTO usersParents (prenom, nom, telephone, email, password, role) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO usersparents (prenom, nom, telephone, email, password, role) VALUES (?, ?, ?, ?, ?, ?)";
         int rowsAffected = beanJDBCTemplate.update(sql, authUser.getPrenom(), authUser.getNom(), authUser.getTelephone(), authUser.getEmail(), authUser.getPassword(), authUser.getRole());
         if(rowsAffected > 0) {
             return authUser;
@@ -38,7 +38,7 @@ public class UserParentJDBCDaoImpl implements IUserParentDao {
     }
     @Override
     public void save(AuthUser adminUser) {
-        String sql = "INSERT INTO usersParents (prenom, nom, telephone, email, password) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO usersparents (prenom, nom, telephone, email, password) VALUES (?, ?, ?, ?, ?)";
         int rowsAffected = beanJDBCTemplate.update(sql, adminUser.getPrenom(), adminUser.getNom(), adminUser.getTelephone(), adminUser.getEmail(), adminUser.getPassword());
     }
     @Override
@@ -50,7 +50,7 @@ public class UserParentJDBCDaoImpl implements IUserParentDao {
         }else {
             log.info("User from Dao : " + user);
         }
-        String sql = "UPDATE usersParents SET prenom = ?, nom = ?, telephone = ?, email = ?, password = ?, isActived = ? WHERE id = ?";
+        String sql = "UPDATE usersparents SET prenom = ?, nom = ?, telephone = ?, email = ?, password = ?, isActived = ? WHERE id = ?";
         int rowsAffected = beanJDBCTemplate.update(sql, user.getPrenom(), user.getNom(), user.getTelephone(), user.getEmail(), user.getPassword(),user.getIsActived(), user.getId());
         if (rowsAffected > 0) {
             log.info("User updated successfully");
@@ -69,7 +69,7 @@ public class UserParentJDBCDaoImpl implements IUserParentDao {
         }else {
             log.info("User from Dao : " + user);
         }
-        String sql = "UPDATE usersParents SET password = ? WHERE id = ?";
+        String sql = "UPDATE usersparents SET password = ? WHERE id = ?";
         int rowsAffected = beanJDBCTemplate.update(sql, user.getPassword(), user.getId());
         if (rowsAffected > 0) {
             log.info("User password updated successfully");

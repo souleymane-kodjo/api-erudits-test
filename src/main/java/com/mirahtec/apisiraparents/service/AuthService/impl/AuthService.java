@@ -211,7 +211,7 @@ public class AuthService implements IAuthService {
             }
         }
         catch (DataAccessException e){
-//            e.printStackTrace();
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("erreur", "Erreur de base de données"));
         }
         catch (Exception e){
