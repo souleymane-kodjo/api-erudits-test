@@ -12,10 +12,18 @@ import org.springframework.stereotype.Component;
 public class UserParentJDBCDaoImpl implements IUserParentDao {
     @Autowired
     private JdbcTemplate beanJDBCTemplate  ;
+//    @Override
+//    public AuthUser findByUsername(String telephone) {
+//        String sql = "SELECT * FROM usersParents WHERE telephone = ?  ORDER BY id DESC LIMIT 1";
+//        AuthUser authUser = beanJDBCTemplate.queryForObject(sql, new Object[]{telephone}, new BeanPropertyRowMapper<>(AuthUser.class));
+//        log.info("User found: " + authUser);
+//        return authUser;
+//    }
     @Override
     public AuthUser findByUsername(String telephone) {
-        String sql = "SELECT * FROM usersParents WHERE telephone = ? LIMIT 1";
+        String sql = "SELECT * FROM usersParents WHERE telephone = ?  ORDER BY id DESC LIMIT 1";
         AuthUser authUser = beanJDBCTemplate.queryForObject(sql, new Object[]{telephone}, new BeanPropertyRowMapper<>(AuthUser.class));
+        log.info("User found: " + authUser);
         return authUser;
     }
     @Override
@@ -34,7 +42,14 @@ public class UserParentJDBCDaoImpl implements IUserParentDao {
         int rowsAffected = beanJDBCTemplate.update(sql, adminUser.getPrenom(), adminUser.getNom(), adminUser.getTelephone(), adminUser.getEmail(), adminUser.getPassword());
     }
     @Override
-    public boolean updateUser(AuthUser user) {
+    public boolean updateUser(AuthUser user) throws Exception {
+
+        if (user.getId() == null) {
+            log.error("User id is null");
+            return false;
+        }else {
+            log.info("User from Dao : " + user);
+        }
         String sql = "UPDATE usersParents SET prenom = ?, nom = ?, telephone = ?, email = ?, password = ?, isActived = ? WHERE id = ?";
         int rowsAffected = beanJDBCTemplate.update(sql, user.getPrenom(), user.getNom(), user.getTelephone(), user.getEmail(), user.getPassword(),user.getIsActived(), user.getId());
         if (rowsAffected > 0) {
@@ -44,5 +59,24 @@ public class UserParentJDBCDaoImpl implements IUserParentDao {
             log.error("Error updating user");
             return false;
         }
+    }
+
+    @Override
+    public boolean updateUserPassWord(AuthUser user) {
+        if (user.getId() == null) {
+            log.error("User id is null");
+            return false;
+        }else {
+            log.info("User from Dao : " + user);
+        }
+        String sql = "UPDATE usersParents SET password = ? WHERE id = ?";
+        int rowsAffected = beanJDBCTemplate.update(sql, user.getPassword(), user.getId());
+        if (rowsAffected > 0) {
+            log.info("User password updated successfully");
+            return true;
+        } else {
+            log.error("Error updating user password");
+            return false;
+            }
     }
 }

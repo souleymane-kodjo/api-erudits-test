@@ -32,12 +32,10 @@ public class StudentController {
     @GetMapping("/parent/{parentUsername}")
     public ResponseEntity<?> getStudentsByParentId(@PathVariable String parentUsername) {
         try {
-//            List<Student> students = studentService.getStudentsByParentUsername(parentUsername);
-            String matriculeParent = parentService.getMatriculeParentByParentUsername(parentUsername);
-
-            List<Student> students = studentService.getStudentsByMatriculeParent(matriculeParent);
+            List<Student> students = studentService.getStudentsByParentUsername(parentUsername);
             if (students.isEmpty()) {
                 HashMap<String, String> response = new HashMap<>();
+
                 response.put("status", "false");
                 response.put("message", "Parent not found");
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);

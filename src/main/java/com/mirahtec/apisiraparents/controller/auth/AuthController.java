@@ -7,6 +7,7 @@ import com.mirahtec.apisiraparents.service.AuthService.IAuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,8 +16,12 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequestMapping("/api/v1/auth")
 public class AuthController {
-    @Autowired
-    private IAuthService authService;
+    private final IAuthService authService;
+
+    public AuthController(IAuthService authService) {
+        this.authService = authService;
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpServletRequest requestClient) {
         return authService.login(loginRequest, requestClient);

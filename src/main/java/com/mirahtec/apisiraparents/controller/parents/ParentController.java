@@ -28,16 +28,22 @@ public class ParentController {
 
     @GetMapping("/{parentUsername}")
     public Parent getParentByUsername(@PathVariable String parentUsername) {
+        log.info("Parent username: {}", parentUsername);
         return parentJDBCDao.findByUsername(parentUsername);
     }
+//    @GetMapping("/{parentUsername}/students")
+//    public ResponseEntity<?> getStudentsByParentUsername(@PathVariable String parentUsername) {
+//        String matriculeParent = parentService.getMatriculeParentByParentUsername(parentUsername);
+//        List<Student> students = studentService.getStudentsByMatriculeParent(matriculeParent);
+//        return ResponseEntity.ok(students);
+//    }
     @GetMapping("/{parentUsername}/students")
     public ResponseEntity<?> getStudentsByParentUsername(@PathVariable String parentUsername) {
-        String matriculeParent = parentService.getMatriculeParentByParentUsername(parentUsername);
-
-        List<Student> students = studentService.getStudentsByMatriculeParent(matriculeParent);
-
-        return ResponseEntity.ok(students);
+            String matriculeParent = parentService.getMatriculeParentByParentUsername(parentUsername);
+            List<Student> students = studentService.getStudentsByMatriculeParent(matriculeParent);
+            return ResponseEntity.ok(students);
     }
+
 
     @GetMapping("/students")
     public List<Student> getAllStudents() {

@@ -11,5 +11,7 @@ public interface IUserParentDao {
 
     void save(AuthUser adminUser);
 
-    boolean updateUser(AuthUser user);
+    boolean updateUser(AuthUser user) throws Exception;
+
+    boolean updateUserPassWord(AuthUser user);
 }

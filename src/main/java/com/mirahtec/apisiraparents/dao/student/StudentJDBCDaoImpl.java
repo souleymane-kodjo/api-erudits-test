@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -41,7 +42,7 @@ public class StudentJDBCDaoImpl implements IStudentDao {
 
     @Override
     public Student getStudentByMatricule(String matricule) {
-        String sql = "SELECT * FROM " + elevesTable + " WHERE matricule = ?";
+        String sql = "SELECT * FROM eleves25 WHERE matricule = ?";
         try {
             return beanJDBCTemplate.queryForObject(sql, new Object[]{matricule}, (rs, rowNum) -> {
                 Student student = new Student();
@@ -63,12 +64,16 @@ public class StudentJDBCDaoImpl implements IStudentDao {
         }
     }
 
-
+    public List<Student> findStudentsByParentUsername(String username) {
+        String sql = "SELECT eleves23.matricule,eleves23.idClasse ,eleves23.nomEleve, eleves23.prenomEleve, eleves23.dateNaissanceEleve as ddn, eleves23.lieuN as ldn, classes.nom_classe FROM  parents  INNER JOIN eleves23 ON eleves23.matricule=parents.matriculeEleve INNER JOIN classes ON eleves23.idClasse=classes.idClasse where parents.telephone = ?";
+        List<Student> students = beanJDBCTemplate.query(sql, new Object[]{username}, new BeanPropertyRowMapper<>(Student.class));
+        return students;
+    }
     public List<Student> findStudentsByMatriculeParent(String matriculeParent) {
-        String sql = "SELECT * FROM " + elevesTable + " WHERE matriculeParent = ?";
+        String sql = "SELECT * FROM eleves25 WHERE matriculeParent = ?";
         return beanJDBCTemplate.query(sql, new Object[]{matriculeParent}, (rs, rowNum) -> {
             Student student = new Student();
-//            student.setId(rs.getLong("id")); // Assuming there's an 'id' colum
+            student.setId(rs.getLong("id")); // Assuming there's an 'id' colum
             student.setMatricule(rs.getInt("matricule")); // Adjust field names as per your table
             student.setPrenomEleve(rs.getString("prenomEleve"));
             student.setNomEleve(rs.getString("nomEleve"));

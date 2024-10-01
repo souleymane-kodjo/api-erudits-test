@@ -19,6 +19,7 @@ import io.github.resilience4j.retry.annotation.Retry;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -78,6 +79,7 @@ public class AuthService implements IAuthService {
     }
     @Override
     public ResponseEntity<?> changePassword(ChangePasswordRequest changePasswordRequest) {
+        try{
         String username = changePasswordRequest.getUsername();
         if (username == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Username is required"));
@@ -111,6 +113,12 @@ public class AuthService implements IAuthService {
         user.setIsActived(true);
         userParentJDBCDaoImpl.updateUser(user);
         return ResponseEntity.ok(Map.of("message", "Password changed successfully"));
+        } catch (DataAccessException e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Database error"));
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Service unavailable"));
+        }
     }
 
     public ResponseEntity<?> fallback(Throwable t) {
@@ -123,7 +131,9 @@ public class AuthService implements IAuthService {
     @RateLimiter(name = "backendA")
     public ResponseEntity<?> login(LoginRequest loginRequest, HttpServletRequest requestClient) {
         try {
-            String username = ParserString.parseTelephone(loginRequest.getUsername());
+            //String username = ParserString.parseTelephone(loginRequest.getUsername());
+            String username = loginRequest.getUsername();
+
             log.info("username: " + username);
             String password = loginRequest.getPassword();
             Authentication authentication;
@@ -170,15 +180,22 @@ public class AuthService implements IAuthService {
         if (resetPasswordRequest.getUsername() == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("Erreur", "Nom d'utilisateur requis"));
         }
+        log.info("resetPasswordRequest: " + resetPasswordRequest);
         try {
+            log.info("userTelephone: " + resetPasswordRequest.getUsername());
+            AuthUser user = userParentJDBCDaoImpl.findByUsername(resetPasswordRequest.getUsername());
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("Erreur", "Utilisateur non trouvé"));
+            }
+            log.info("user selectionner : " + user);
             String DefaultPassword = "mirahtec@2024";
             String DefaultPasswordHashed = passwordEncoderSHA256.encode(DefaultPassword);
             log.info("DefaultPasswordHashed: " + DefaultPasswordHashed);
-            AuthUser user = userParentJDBCDaoImpl.findByUsername(ParserString.parseTelephone(resetPasswordRequest.getUsername()));
-            log.info("user: " + user);
             user.setPassword(DefaultPasswordHashed);
             user.setIsActived(false);
-            Boolean isUpdated = userParentJDBCDaoImpl.updateUser(user);
+            var isUpdated = false;
+            isUpdated  = userParentJDBCDaoImpl.updateUserPassWord(user);
+            log.info("isUpdated: " + isUpdated);
             if (isUpdated) {
                 MessageSenderService messageSenderService = new MessageSenderService();
                 messageSenderService.sendSMS(user.getTelephone(), "\n Votre mot de passe a été réinitialisé avec succès.\n Votre nouveau mot de passe est: " + DefaultPassword);
@@ -194,7 +211,7 @@ public class AuthService implements IAuthService {
             }
         }
         catch (DataAccessException e){
-            e.printStackTrace();
+//            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("erreur", "Erreur de base de données"));
         }
         catch (Exception e){
