@@ -1,4 +1,4 @@
-package com.mirahtec.apisiraparents.controller.quittance;
+package com.mirahtec.apisiraparents.controller.payment;
 
 import com.mirahtec.apisiraparents.model.Quittance;
 import com.mirahtec.apisiraparents.service.documentService.QuittanceService;

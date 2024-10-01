@@ -1,4 +1,4 @@
-package com.mirahtec.apisiraparents.dao;
+package com.mirahtec.apisiraparents.dao.niveau;
 
 import com.mirahtec.apisiraparents.model.Niveau;
 

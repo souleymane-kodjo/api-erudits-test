@@ -1,7 +1,7 @@
-package com.mirahtec.apisiraparents.controller;
+package com.mirahtec.apisiraparents.controller.payment;
 
 import com.mirahtec.apisiraparents.dto.PaymentResponse;
-import com.mirahtec.apisiraparents.service.PaymentService;
+import com.mirahtec.apisiraparents.service.payment.PaymentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,6 @@ import java.util.HashMap;
 public class PaymentController {
     @Autowired
     private PaymentService paiementService;
-
     //getPaymentsByStudentMatricule
     @RequestMapping("/month/student/{matricule}")
     public ResponseEntity<?> getPaymentsMonthByStudentMatricule(@PathVariable String matricule) {
@@ -31,7 +30,6 @@ public class PaymentController {
         responsePayments.setCumule_paiements(Double.parseDouble(cumulePayments.get("t_paye")));
         responsePayments.setImpayes(Double.parseDouble(cumulePayments.get("t_dettes")));
         responsePayments.setPayments(paiementService.getPaymentsMonthByStudentMatricule(matricule));
-        //ResponseEntity<?> response = new ResponseEntity<>(paiementService.getPaymentsMonthByStudentMatricule(matricule), HttpStatus.OK);
         ResponseEntity<?> response = new ResponseEntity<>(responsePayments, HttpStatus.OK);
         return response;
     }

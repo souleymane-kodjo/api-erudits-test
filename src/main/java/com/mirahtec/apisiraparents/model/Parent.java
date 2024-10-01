@@ -1,5 +1,6 @@
 package com.mirahtec.apisiraparents.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
@@ -13,11 +14,11 @@ public class Parent implements Serializable  {
     @Id
     private Long id;
 
-    @Column("prenom")
-    private String prenom;
+    @Column("prenomParent")
+    private String prenomParent;
 
-    @Column("nom")
-    private String nom;
+    @Column("nomParent")
+    private String nomParent;
 
     @Column("telephone")
     private String telephone;
@@ -26,11 +27,19 @@ public class Parent implements Serializable  {
     private String email;
 
     @Column("password")
+    @JsonIgnore
     private String password;
     @Column("role")
     private String role;
 
+    //
+
     public String getUsername() {
         return telephone;
     }
+
+    public String getRole() {
+        return "PARENT_ELEVE";
+    }
+
 }

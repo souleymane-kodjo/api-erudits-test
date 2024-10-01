@@ -1,4 +1,4 @@
-package com.mirahtec.apisiraparents.service;
+package com.mirahtec.apisiraparents.service.carnetService;
 
 import com.mirahtec.apisiraparents.dao.carnet.CarnetJDBCDaoImpl;
 import com.mirahtec.apisiraparents.model.Carnet;

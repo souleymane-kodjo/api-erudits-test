@@ -1,12 +1,9 @@
-package com.mirahtec.apisiraparents.dao.impl;
-
-import com.mirahtec.apisiraparents.dao.ITimeTableDao;
+package com.mirahtec.apisiraparents.dao.timetable;
 
 import com.mirahtec.apisiraparents.dto.TimeTableReponse;
 import com.mirahtec.apisiraparents.model.Subject;
 import com.mirahtec.apisiraparents.model.TimeTable;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;

@@ -1,7 +1,7 @@
-package com.mirahtec.apisiraparents.controller;
+package com.mirahtec.apisiraparents.controller.carnet;
 
 import com.mirahtec.apisiraparents.model.Carnet;
-import com.mirahtec.apisiraparents.service.CarnetService;
+import com.mirahtec.apisiraparents.service.carnetService.CarnetService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.function.EntityResponse;
 
 import java.util.List;
 
@@ -25,7 +24,6 @@ public class CarnetController {
         if (matricule == null || matricule.isEmpty()) {
             return ResponseEntity.badRequest().body("Le matricule ne doit pas etre vide");
         }
-
         try {
             List<Carnet> carnets = carnetService.getCarnetsByStudentMatricule(matricule);
             if (carnets == null) {
@@ -38,7 +36,7 @@ public class CarnetController {
             return ResponseEntity.ok(carnets);
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body("Erreur lors de la recuperation du carnet");
+            return ResponseEntity.status(500).body("error logs de la recuperation du carnet");
         }
     }
 }

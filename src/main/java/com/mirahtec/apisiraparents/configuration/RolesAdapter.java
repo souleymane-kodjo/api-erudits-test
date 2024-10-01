@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 
 @Getter
+
 @AllArgsConstructor
 public class RolesAdapter implements GrantedAuthority {
     private final String role;

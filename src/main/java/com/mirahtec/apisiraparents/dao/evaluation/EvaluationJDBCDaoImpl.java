@@ -1,6 +1,5 @@
-package com.mirahtec.apisiraparents.dao.impl;
+package com.mirahtec.apisiraparents.dao.evaluation;
 
-import com.mirahtec.apisiraparents.dao.IEvaluationDao;
 import com.mirahtec.apisiraparents.model.Evaluation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

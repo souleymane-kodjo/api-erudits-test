@@ -1,8 +1,6 @@
-package com.mirahtec.apisiraparents.dao.impl;
+package com.mirahtec.apisiraparents.dao.document;
 
 import com.mirahtec.apisiraparents.model.Document;
-import com.mirahtec.apisiraparents.model.Payment;
-import com.mirahtec.apisiraparents.model.ReportCard;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -17,21 +15,22 @@ import java.util.List;
 
 @Repository
 @Slf4j
-public class DocumentJDBCDaoImpl {
+public class DocumentJDBCDaoImpl implements IDocumentDao {
 
     @Autowired
     private JdbcTemplate jdbcTemplate  ;
 
+    @Override
     public List<Document> getQuittancesInscriptionByMatricule(String matricule) {
         String sql = "SELECT * FROM d_quittances_inscription WHERE matricule = ?";
         return jdbcTemplate.query(sql, new Object[]{matricule}, new BeanPropertyRowMapper<>(Document.class));
     }
-
+    @Override
     public List<Document> getCertificatScolariteByMatricule(String matricule) {
         String sql = "SELECT * FROM d_certificat_scolarite WHERE matricule = ? ";
         return jdbcTemplate.query(sql, new Object[]{matricule}, new BeanPropertyRowMapper<>(Document.class));
     }
-
+    @Override
     public List<Document> getEcheancierByMatricule(String matricule) {
         String sql = "SELECT * FROM d_echeancier WHERE matricule = ?";
         return jdbcTemplate.query(sql, new Object[]{matricule}, new RowMapper<Document>() {
@@ -47,15 +46,14 @@ public class DocumentJDBCDaoImpl {
         });
 
     }
-
+    @Override
     public List<Document> getDocUploadedElevesByMatricule(String matricule) {
         String sql = "SELECT * FROM doc_uploaded_eleves WHERE matricule = ?";
         return jdbcTemplate.query(sql, new Object[]{matricule}, new BeanPropertyRowMapper<>(Document.class));
     }
-
+    @Override
     public List<Document> getDocUploadedClassesByIdClasse(String idClasse) {
         try {
-
             String sql = "SELECT * FROM doc_uploaded_classes WHERE id_classe = ?";
             return jdbcTemplate.query(sql, new Object[]{idClasse}, (rs, rowNum) -> {
                 Document documentClasse = new Document();
@@ -74,15 +72,15 @@ public class DocumentJDBCDaoImpl {
         }
 
     }
-
+    @Override
     public List<Document> getDocUploadedEcole() {
         String sql = "SELECT * FROM doc_uploaded_ecole";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Document.class));
     }
-
+    @Override
     public List<Document> getDocumentsByMatricule(String matricule) {
         //certificat de scolarite
-        String sqlCertificatScolarite = "SELECT * FROM d_certificat_scolarite WHERE matricule = ?";
+        String sqlCertificatScolarite = "SELECT * FROM d_certificat_scolarite WHERE matricule = ? ";
         List<Document> certificatScolarite = jdbcTemplate.query(sqlCertificatScolarite, new Object[]{matricule},(rs, rowNum) -> {
             Document document = new Document();
             document.setMatricule(rs.getString("matricule"));
@@ -128,8 +126,7 @@ public class DocumentJDBCDaoImpl {
         documents.addAll(docUploadedEleves);
         return documents;
     }
-
-
+    @Override
     public List<Document> getDocumentsByClasse(String idClasse)
     {
         String sql = "SELECT * FROM doc_uploaded_classes WHERE id_classe = ?";

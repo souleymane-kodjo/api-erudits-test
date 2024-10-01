@@ -1,7 +1,7 @@
-package com.mirahtec.apisiraparents.controller;
+package com.mirahtec.apisiraparents.controller.report;
 
 import com.mirahtec.apisiraparents.model.ReportCard;
-import com.mirahtec.apisiraparents.service.ReportCardService;
+import com.mirahtec.apisiraparents.service.reportCardService.ReportCardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,18 +23,15 @@ public class ReportCardController {
     //Get report cards by student matricule
     @GetMapping("/student/{matricule}")
     public ResponseEntity<?> getReportCardsByStudentMatricule(@PathVariable String matricule) {
-        log.info("Controller : Get report cards by student matricule");
         if (matricule == null || matricule.isEmpty()) {
             return ResponseEntity.badRequest().body("Le matricule ne doit pas etre vide");
         }
-
       List<ReportCard> reportCards = reportCardService.getReportCardsByStudentMatricule(matricule);
         HashMap<String, String> response = new HashMap<>();
         if (reportCards == null || reportCards.isEmpty()) {
-            response.put("message", "Aucun bulletin trouvé pour ce matricule");
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+            response.put("message", "Audu bulletin trouvé pour ce matricule");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
         return ResponseEntity.ok(reportCards);
     }
-
 }

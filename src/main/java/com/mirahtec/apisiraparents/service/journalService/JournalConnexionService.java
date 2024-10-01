@@ -1,4 +1,4 @@
-package com.mirahtec.apisiraparents.service;
+package com.mirahtec.apisiraparents.service.journalService;
 
 import com.mirahtec.apisiraparents.dao.journalConnexion.JournalConnexionJDBCDaoImpl;
 import com.mirahtec.apisiraparents.model.JournalConnexion;

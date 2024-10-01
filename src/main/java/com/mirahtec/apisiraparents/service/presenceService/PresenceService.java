@@ -1,9 +1,11 @@
-package com.mirahtec.apisiraparents.service;
+package com.mirahtec.apisiraparents.service.presenceService;
 
 import com.mirahtec.apisiraparents.dao.presence.PresenceJDBCDaoImpl;
 import com.mirahtec.apisiraparents.model.Niveau;
 import com.mirahtec.apisiraparents.model.Presence;
 import com.mirahtec.apisiraparents.model.Student;
+import com.mirahtec.apisiraparents.service.studentService.StudentService;
+import com.mirahtec.apisiraparents.service.niveauService.NiveauService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

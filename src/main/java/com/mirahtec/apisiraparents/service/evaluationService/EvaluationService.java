@@ -1,4 +1,4 @@
-package com.mirahtec.apisiraparents.service;
+package com.mirahtec.apisiraparents.service.evaluationService;
 
 import com.mirahtec.apisiraparents.dao.evaluation.EvaluationJDBCDaoImpl;
 import com.mirahtec.apisiraparents.model.Evaluation;

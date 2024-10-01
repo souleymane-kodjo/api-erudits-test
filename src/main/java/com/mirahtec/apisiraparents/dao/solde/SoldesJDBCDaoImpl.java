@@ -1,7 +1,7 @@
-package com.mirahtec.apisiraparents.dao.impl;
+package com.mirahtec.apisiraparents.dao.solde;
 
-import com.mirahtec.apisiraparents.dao.ISoldeDao;
 import com.mirahtec.apisiraparents.model.Payment;
+import com.mirahtec.apisiraparents.model.Solde;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,10 +15,10 @@ public class SoldesJDBCDaoImpl  implements ISoldeDao {
     @Autowired
     private JdbcTemplate beanJDBCTemplate;
 
-    public List<Payment> getSoldesByStudentMatricule(String matricule) {
+    public List<Solde> getSoldesByStudentMatricule(String matricule) {
         String sql = "SELECT * FROM m_a_payer_scolarite_mensuel WHERE matricule=? " ;
-        List<Payment> payments = beanJDBCTemplate.query(sql, new Object[]{matricule}, (rs, rowNum) -> {
-            Payment payment = new Payment();
+        List<Solde> payments = beanJDBCTemplate.query(sql, new Object[]{matricule}, (rs, rowNum) -> {
+            Solde payment = new Solde();
             payment.setId(rs.getInt("id"));
             payment.setMatricule(rs.getString("matricule"));
             payment.setMois(rs.getString("mois"));

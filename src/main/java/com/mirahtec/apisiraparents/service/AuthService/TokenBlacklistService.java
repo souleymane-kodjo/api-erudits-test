@@ -1,4 +1,4 @@
-package com.mirahtec.apisiraparents.service;
+package com.mirahtec.apisiraparents.service.AuthService;
 
 import com.mirahtec.apisiraparents.dao.tokenBlackList.TokenBlacklistJDBCDaoImpl;
 import com.mirahtec.apisiraparents.model.TokenBlacklist;

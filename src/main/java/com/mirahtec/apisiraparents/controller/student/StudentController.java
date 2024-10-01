@@ -1,7 +1,9 @@
-package com.mirahtec.apisiraparents.controller;
+package com.mirahtec.apisiraparents.controller.student;
 
 import com.mirahtec.apisiraparents.model.Student;
-import com.mirahtec.apisiraparents.service.StudentService;
+import com.mirahtec.apisiraparents.service.parent.ParentService;
+import com.mirahtec.apisiraparents.service.studentService.IStudentService;
+import com.mirahtec.apisiraparents.service.studentService.StudentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,16 +20,22 @@ import java.util.List;
 @RequestMapping("/api/v1/students")
 public class StudentController {
     @Autowired
-    private StudentService studentService;
+    private IStudentService studentService;
+    @Autowired
+    private ParentService parentService;
     @GetMapping
     public List<Student> getAllStudents() {
+
         return studentService.getAllStudents();
     }
 
     @GetMapping("/parent/{parentUsername}")
     public ResponseEntity<?> getStudentsByParentId(@PathVariable String parentUsername) {
         try {
-            List<Student> students = studentService.getStudentsByParentUsername(parentUsername);
+//            List<Student> students = studentService.getStudentsByParentUsername(parentUsername);
+            String matriculeParent = parentService.getMatriculeParentByParentUsername(parentUsername);
+
+            List<Student> students = studentService.getStudentsByMatriculeParent(matriculeParent);
             if (students.isEmpty()) {
                 HashMap<String, String> response = new HashMap<>();
                 response.put("status", "false");

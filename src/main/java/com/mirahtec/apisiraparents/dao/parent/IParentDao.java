@@ -1,4 +1,4 @@
-package com.mirahtec.apisiraparents.dao;
+package com.mirahtec.apisiraparents.dao.parent;
 
 import com.mirahtec.apisiraparents.model.Parent;
 import com.mirahtec.apisiraparents.model.Student;
@@ -10,4 +10,6 @@ public interface IParentDao {
     List<Student> findStudentsByParentUsername(String username);
 
     Parent findByUsername(String username);
+
+    List<Parent> findAll2(int page, int size);
 }

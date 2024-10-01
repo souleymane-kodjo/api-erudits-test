@@ -1,4 +1,4 @@
-package com.mirahtec.apisiraparents.service;
+package com.mirahtec.apisiraparents.service.payment;
 
 import com.mirahtec.apisiraparents.dao.payment.PaymentJDBCDaoImpl;
 import com.mirahtec.apisiraparents.model.Payment;
@@ -9,22 +9,15 @@ import java.util.HashMap;
 import java.util.List;
 
 @Service
-public class PaymentService {
+public class PaymentService implements IPaymentService{
     @Autowired
     PaymentJDBCDaoImpl paymentJDBCDao;
-
+    @Override
     public List<Payment> getPaymentsMonthByStudentMatricule(String matricule) {
         return paymentJDBCDao.getPaymentsMonthByStudentMatricule(matricule);
     }
+    @Override
     public HashMap<String, String> getCumulePaymentsByStudentMatricule(String matricule) {
         return paymentJDBCDao.getCumulePaymentsByStudentMatricule(matricule);
     }
-//    public double getCumulePaymentsByStudentMatricule(String matricule) {
-//        List<Payment> payments = getPaymentsMonthByStudentMatricule(matricule);
-//        double cumulePayments = 0;
-//        for (Payment payment : payments) {
-//            cumulePayments += Double.parseDouble(payment.getScolarite());
-//        }
-//        return cumulePayments;
-//    }
 }

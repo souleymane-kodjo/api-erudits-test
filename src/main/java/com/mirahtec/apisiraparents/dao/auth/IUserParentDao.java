@@ -1,12 +1,15 @@
-package com.mirahtec.apisiraparents.dao;
+package com.mirahtec.apisiraparents.dao.auth;
 
 import com.mirahtec.apisiraparents.model.AuthUser;
 
 public interface IUserParentDao {
     // liste des étudiants dun parent by username
-
     AuthUser
     findByUsername(String username);
 
-    void updateUser(AuthUser user);
+    AuthUser create(AuthUser authUser);
+
+    void save(AuthUser adminUser);
+
+    boolean updateUser(AuthUser user);
 }

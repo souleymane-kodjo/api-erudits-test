@@ -1,4 +1,4 @@
-package com.mirahtec.apisiraparents.dao.impl;
+package com.mirahtec.apisiraparents.dao.quittance;
 
 import com.mirahtec.apisiraparents.model.Quittance;
 import lombok.extern.slf4j.Slf4j;

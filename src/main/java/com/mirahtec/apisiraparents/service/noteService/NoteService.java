@@ -1,4 +1,4 @@
-package com.mirahtec.apisiraparents.service;
+package com.mirahtec.apisiraparents.service.noteService;
 
 import com.mirahtec.apisiraparents.dao.note.NoteJDBCDaoImpl;
 import com.mirahtec.apisiraparents.model.Note;

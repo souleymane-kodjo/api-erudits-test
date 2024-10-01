@@ -1,7 +1,5 @@
-package com.mirahtec.apisiraparents.dao.impl;
+package com.mirahtec.apisiraparents.dao.note;
 
-import com.mirahtec.apisiraparents.dao.INoteDao;
-import com.mirahtec.apisiraparents.model.Evaluation;
 import com.mirahtec.apisiraparents.model.Note;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

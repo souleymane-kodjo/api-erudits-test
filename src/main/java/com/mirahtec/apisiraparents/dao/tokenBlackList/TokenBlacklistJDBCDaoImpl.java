@@ -1,6 +1,5 @@
-package com.mirahtec.apisiraparents.dao.impl;
+package com.mirahtec.apisiraparents.dao.tokenBlackList;
 
-import com.mirahtec.apisiraparents.dao.ITokenBlacklistDao;
 import com.mirahtec.apisiraparents.model.TokenBlacklist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

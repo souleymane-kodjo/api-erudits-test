@@ -5,6 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
+
 public class Carnet implements Serializable {
     String matricule;
     String date;

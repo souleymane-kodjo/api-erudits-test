@@ -1,7 +1,6 @@
-package com.mirahtec.apisiraparents.controller;
+package com.mirahtec.apisiraparents.controller.note;
 
-import com.mirahtec.apisiraparents.service.EvaluationService;
-import com.mirahtec.apisiraparents.service.NoteService;
+import com.mirahtec.apisiraparents.service.noteService.NoteService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,5 +25,4 @@ public class NoteController {
         }
         return new ResponseEntity<>(noteService.getNotesByStudentMatricule(matricule), HttpStatus.OK);
     }
-
 }

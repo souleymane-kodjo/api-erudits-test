@@ -1,4 +1,4 @@
-package com.mirahtec.apisiraparents.dao;
+package com.mirahtec.apisiraparents.dao.carnet;
 
 import com.mirahtec.apisiraparents.model.Carnet;
 

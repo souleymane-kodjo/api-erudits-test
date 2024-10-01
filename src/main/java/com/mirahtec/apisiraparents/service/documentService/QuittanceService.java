@@ -1,4 +1,4 @@
-package com.mirahtec.apisiraparents.service;
+package com.mirahtec.apisiraparents.service.documentService;
 
 import com.mirahtec.apisiraparents.dao.quittance.QuittanceJDBCDaoImpl;
 import com.mirahtec.apisiraparents.model.Quittance;

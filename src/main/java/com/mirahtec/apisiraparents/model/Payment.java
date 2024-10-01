@@ -15,4 +15,11 @@ public class Payment implements Serializable {
     private String justificatif ;
     private Double total ;
 
+    //get for mode_paiement
+    public String getMode_paiement() {
+        if ( this.mode_paiement == null )
+            mode_paiement = "ESPECE" ;
+        return mode_paiement ;
+    }
+
 }

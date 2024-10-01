@@ -1,4 +1,4 @@
-package com.mirahtec.apisiraparents.dao.impl;
+package com.mirahtec.apisiraparents.dao.presence;
 
 import com.mirahtec.apisiraparents.model.Presence;
 import org.springframework.beans.factory.annotation.Autowired;

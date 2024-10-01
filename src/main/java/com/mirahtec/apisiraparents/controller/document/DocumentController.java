@@ -1,15 +1,18 @@
-package com.mirahtec.apisiraparents.controller;
+package com.mirahtec.apisiraparents.controller.document;
 
-import com.mirahtec.apisiraparents.service.DocumentService;
+import com.mirahtec.apisiraparents.dto.DocumentResponse;
+import com.mirahtec.apisiraparents.model.Document;
+import com.mirahtec.apisiraparents.service.documentService.DocumentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/documents")
@@ -21,9 +24,12 @@ public class DocumentController {
     //getDocumentsByMatricule
     @GetMapping("/student/{matricule}")
     public ResponseEntity<?> getDocumentsByMatricule(@PathVariable String matricule) {
-        return documentService.getDocumentsByMatricule(matricule);
+        if (matricule == null) {
+            return ResponseEntity.badRequest().body("Matricule cannot be null");
+        }
+        List<Document> documents = documentService.getDocumentsByMatricule(matricule);
+        return ResponseEntity.ok(documents);
     }
-
     //getQuittancesInscriptionByMatricule
     @GetMapping("/quittances/student/{matricule}")
     public ResponseEntity<?> getQuittancesInscriptionByMatricule(@PathVariable String matricule) {

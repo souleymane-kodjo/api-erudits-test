@@ -1,4 +1,4 @@
-package com.mirahtec.apisiraparents.dao.impl;
+package com.mirahtec.apisiraparents.dao.payment;
 
 import com.mirahtec.apisiraparents.model.Payment;
 import org.springframework.beans.factory.annotation.Autowired;

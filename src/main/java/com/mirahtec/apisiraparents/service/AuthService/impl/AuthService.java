@@ -1,14 +1,21 @@
-package com.mirahtec.apisiraparents.service.AuthService;
+package com.mirahtec.apisiraparents.service.AuthService.impl;
 
 import com.mirahtec.apisiraparents.dao.auth.IUserParentDao;
-import com.mirahtec.apisiraparents.dao.auth.UserParentJDBCDaoImpl;
 import com.mirahtec.apisiraparents.dto.*;
 import com.mirahtec.apisiraparents.model.AuthUser;
 import com.mirahtec.apisiraparents.model.JournalConnexion;
 import com.mirahtec.apisiraparents.model.TokenBlacklist;
+import com.mirahtec.apisiraparents.service.AuthService.IAuthService;
+import com.mirahtec.apisiraparents.service.AuthService.TokenBlacklistService;
+import com.mirahtec.apisiraparents.service.AuthService.UserParentService;
 import com.mirahtec.apisiraparents.service.journalService.JournalConnexionService;
+import com.mirahtec.apisiraparents.service.messageService.MessageSenderService;
+import com.mirahtec.apisiraparents.utils.ParserString;
 import com.mirahtec.apisiraparents.utils.SHA256PasswordEncoder;
 import com.mirahtec.apisiraparents.utils.JwtUtils;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +39,7 @@ import java.util.Map;
 
 @Service
 @Slf4j
-public class AuthService {
+public class AuthService implements IAuthService {
     @Autowired
     private SHA256PasswordEncoder passwordEncoderSHA256;
     @Autowired
@@ -47,7 +54,7 @@ public class AuthService {
     private TokenBlacklistService tokenBlacklistService;
     @Autowired
     private JournalConnexionService journalConnexionService;
-
+    @Override
     public ResponseEntity<?> logout(HttpServletRequest request) {
         try {
             String jwtToken = utils.getJwtFromHeader(request);
@@ -68,19 +75,8 @@ public class AuthService {
             //e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Internal server error"));
         }
-//    public ResponseEntity<?> logout(HttpServletRequest request) {
-//        String jwtToken = utils.getJwtFromHeader(request);
-//        if (jwtToken != null && utils.validateJwtToken(jwtToken)) {
-//            tokenBlacklistService.addTokenToBlacklist(jwtToken);
-//            SecurityContextHolder.clearContext();
-//            return ResponseEntity.ok(Map.of("message", "Successfully logged out"));
-//        } else {
-//            // Invalid token
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid token"));
-//        }
-//    }
     }
-
+    @Override
     public ResponseEntity<?> changePassword(ChangePasswordRequest changePasswordRequest) {
         String username = changePasswordRequest.getUsername();
         if (username == null) {
@@ -117,18 +113,21 @@ public class AuthService {
         return ResponseEntity.ok(Map.of("message", "Password changed successfully"));
     }
 
+    public ResponseEntity<?> fallback(Throwable t) {
+        return ResponseEntity.status(500).body("Service is temporarily unavailable. Please try again later.");
+    }
+
+    @Override
+    @CircuitBreaker(name = "backendA", fallbackMethod = "fallback")
+    @Retry(name = "backendA")
+    @RateLimiter(name = "backendA")
     public ResponseEntity<?> login(LoginRequest loginRequest, HttpServletRequest requestClient) {
-        String username = loginRequest.getUsername();
-        String password = loginRequest.getPassword();
-        //String hashedPassword = HashUtil.hashSha256(password);
-        String hashedPassword = password;
-
-        Authentication authentication;
         try {
-            //authentication = authenticationManager
-            //       .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-            authentication =  authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, hashedPassword));
-
+            String username = ParserString.parseTelephone(loginRequest.getUsername());
+            log.info("username: " + username);
+            String password = loginRequest.getPassword();
+            Authentication authentication;
+            authentication =  authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
             SecurityContextHolder.getContext().setAuthentication(authentication);
             UserDetails userDetail= (UserDetails) authentication.getPrincipal();
             String jwtToken = utils.generateTokenFromUsername(userDetail);
@@ -139,11 +138,8 @@ public class AuthService {
             JournalConnexion journalConnexion = new JournalConnexion();
             journalConnexion.setLogin(username);
             journalConnexion.setDateConnexion(LocalDateTime.now());
-
             String clientIP = requestClient.getRemoteAddr();
-
             journalConnexion.setIpAddress(clientIP);
-
             journalConnexion.setTypeDevice("Mobile");
             journalConnexionService.addJournalConnexion(journalConnexion);
             LoginResponse response = new LoginResponse(jwtToken,roles,userDetail.getUsername());
@@ -158,44 +154,51 @@ public class AuthService {
             map.put("message", "Mot de passe ou nom d'utilisateur incorrect");
             return new ResponseEntity<>(map, HttpStatus.NOT_FOUND);
         }
-        //invalid token
         catch (Exception e){
-            //e.printStackTrace();
+            e.printStackTrace();
             Map<String, Object> map = new HashMap<>();
             map.put("status", false);
             map.put("message", "Service indisponible");
             return new ResponseEntity<>(map, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @Override
     public ResponseEntity<?> resetPassword(ResetPasswordRequest resetPasswordRequest) {
         if (resetPasswordRequest == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Request body is required"));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("Erreur", "Erreur de requête"));
         }
         if (resetPasswordRequest.getUsername() == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "Username is required"));
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("Erreur", "Nom d'utilisateur requis"));
         }
         try {
-            String DefaultPassword = "admin";
+            String DefaultPassword = "mirahtec@2024";
             String DefaultPasswordHashed = passwordEncoderSHA256.encode(DefaultPassword);
-            AuthUser user = userParentJDBCDaoImpl.findByUsername(resetPasswordRequest.getUsername());
+            log.info("DefaultPasswordHashed: " + DefaultPasswordHashed);
+            AuthUser user = userParentJDBCDaoImpl.findByUsername(ParserString.parseTelephone(resetPasswordRequest.getUsername()));
+            log.info("user: " + user);
             user.setPassword(DefaultPasswordHashed);
             user.setIsActived(false);
-            userParentJDBCDaoImpl.updateUser(user);
-            ChangePasswordResponse changePasswordResponse = new ChangePasswordResponse();
-            changePasswordResponse.setMessage("Non utilisateur ou mot de passe incorrect : ");
-            changePasswordResponse.setStatus(true);
-            return ResponseEntity.ok(changePasswordResponse);
+            Boolean isUpdated = userParentJDBCDaoImpl.updateUser(user);
+            if (isUpdated) {
+                MessageSenderService messageSenderService = new MessageSenderService();
+                messageSenderService.sendSMS(user.getTelephone(), "\n Votre mot de passe a été réinitialisé avec succès.\n Votre nouveau mot de passe est: " + DefaultPassword);
+                ChangePasswordResponse changePasswordResponse = new ChangePasswordResponse();
+                changePasswordResponse.setMessage("Mot de passe réinitialisé avec succès");
+                changePasswordResponse.setStatus(true);
+                return ResponseEntity.ok(changePasswordResponse);
+            } else {
+                ChangePasswordResponse changePasswordResponse = new ChangePasswordResponse();
+                changePasswordResponse.setMessage("Non utilisation ou mot de passe incorrect : ");
+                changePasswordResponse.setStatus(true);
+                return ResponseEntity.ok(changePasswordResponse);
+            }
         }
-        //
-        //Sql exceptio DataAccessException
         catch (DataAccessException e){
-            //e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Database error"));
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("erreur", "Erreur de base de données"));
         }
         catch (Exception e){
-            //e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "Service indisponible"));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("erreur", "Service indisponible"));
         }
     }
 }

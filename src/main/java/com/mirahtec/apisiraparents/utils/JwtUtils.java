@@ -1,8 +1,7 @@
 package com.mirahtec.apisiraparents.utils;
 
-import com.mirahtec.apisiraparents.dao.impl.TokenBlacklistJDBCDaoImpl;
+import com.mirahtec.apisiraparents.dao.tokenBlackList.TokenBlacklistJDBCDaoImpl;
 import com.mirahtec.apisiraparents.model.TokenBlacklist;
-import com.mirahtec.apisiraparents.service.UserDetailsServiceCustom;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -14,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -58,7 +56,8 @@ public class JwtUtils {
         Calendar calendar =Calendar.getInstance();
         calendar.setTime(new Date());
         calendar.add(Calendar.MILLISECOND, Integer.valueOf(jwtExpirationMs));
-        return Jwts.builder()
+        return Jwts
+                .builder()
                 .subject(username)
                 .issuedAt(new Date())
                 .signWith(key())
@@ -75,10 +74,9 @@ public class JwtUtils {
 
     public boolean validateJwtToken(String authToken) {
         if (isTokenBlacklisted(authToken)) {
-            logger.error("Token is blacklisted: {}", authToken); // Ensure logging the token is safe and compliant with your security policies
+            logger.error("Token is blacklisted: {}", authToken);
             return false;
         }
-
         try {
             Jwts.parser().verifyWith((SecretKey) key()).build().parseSignedClaims(authToken);
             return true;
@@ -89,9 +87,7 @@ public class JwtUtils {
         }
         return false;
     }
-
-    //    feature
-    @Scheduled(fixedRate = 86400000) // Example: once a day
+    @Scheduled(fixedRate = 86400000)
     public void cleanupExpiredTokens() {
         List<TokenBlacklist> allTokens = tokenBlacklistJDBCDao.findAll();
         allTokens.forEach(token -> {

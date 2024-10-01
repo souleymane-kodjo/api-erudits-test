@@ -1,4 +1,4 @@
-package com.mirahtec.apisiraparents.dao;
+package com.mirahtec.apisiraparents.dao.classe;
 
 import com.mirahtec.apisiraparents.model.Class;
 import org.springframework.stereotype.Component;

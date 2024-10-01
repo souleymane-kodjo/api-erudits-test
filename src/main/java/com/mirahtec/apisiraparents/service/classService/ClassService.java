@@ -1,4 +1,4 @@
-package com.mirahtec.apisiraparents.service;
+package com.mirahtec.apisiraparents.service.classService;
 
 import com.mirahtec.apisiraparents.dao.classe.ClassJDBCDaoImpl;
 import com.mirahtec.apisiraparents.model.Class;

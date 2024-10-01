@@ -1,6 +1,5 @@
-package com.mirahtec.apisiraparents.dao.impl;
+package com.mirahtec.apisiraparents.dao.carnet;
 
-import com.mirahtec.apisiraparents.dao.ICarnetDao;
 import com.mirahtec.apisiraparents.model.Carnet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;

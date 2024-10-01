@@ -1,4 +1,4 @@
-package com.mirahtec.apisiraparents.service;
+package com.mirahtec.apisiraparents.service.AuthService;
 
 import com.mirahtec.apisiraparents.dao.parent.ParentJDBCDaoImpl;
 import com.mirahtec.apisiraparents.model.AuthUser;

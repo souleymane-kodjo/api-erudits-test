@@ -1,4 +1,4 @@
-package com.mirahtec.apisiraparents.service;
+package com.mirahtec.apisiraparents.service.TimeTableService;
 
 import com.mirahtec.apisiraparents.dao.timetable.TimeTableJDBCDao;
 import com.mirahtec.apisiraparents.dto.TimeTableReponse;
@@ -15,20 +15,16 @@ public class  TimeTableService {
     private TimeTableJDBCDao timeTableJDBCDao;
     public TimeTableReponse getTimetable(String  classId, String day) {
         try {
-            log.info("TimeTableService called with day: {}", day);
-            TimeTableReponse timeTableReponse = timeTableJDBCDao.getSubjectTimeTable(classId, day);
-            log.info("TimeTableService called with day: {}", timeTableReponse);
-            return timeTableReponse;
+            return timeTableJDBCDao.getSubjectTimeTable(classId, day);
         }catch (Exception e){
-            e.printStackTrace();
+            log.error("Erreur de récupération des emplois du temps", e);
             return null;
         }
     }
 
     public List<TimeTableReponse> getTimetableByWeek(String classId) {
         try {
-            log.info("TimeTableService called with week: {}");
-            List<TimeTableReponse> timeTableReponse = List.of(
+            return List.of(
                     timeTableJDBCDao.getSubjectTimeTable(classId, "LUNDI"),
                     timeTableJDBCDao.getSubjectTimeTable(classId, "MARDI"),
                     timeTableJDBCDao.getSubjectTimeTable(classId, "MERCREDI"),
@@ -38,11 +34,8 @@ public class  TimeTableService {
                     timeTableJDBCDao.getSubjectTimeTable(classId, "DIMANCHE")
 
             );
-
-            log.info("TimeTableService called with day: {}", timeTableReponse);
-            return timeTableReponse;
         }catch (Exception e){
-            e.printStackTrace();
+            log.error("Erreur de récupération d'emploi du temps", e);
             return null;
         }
     }

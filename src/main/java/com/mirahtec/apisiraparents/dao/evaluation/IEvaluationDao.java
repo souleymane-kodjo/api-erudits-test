@@ -1,4 +1,4 @@
-package com.mirahtec.apisiraparents.dao;
+package com.mirahtec.apisiraparents.dao.evaluation;
 
 import com.mirahtec.apisiraparents.model.Evaluation;
 

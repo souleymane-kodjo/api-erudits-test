@@ -3,7 +3,7 @@ package com.mirahtec.apisiraparents.controller.auth;
 import com.mirahtec.apisiraparents.dto.ChangePasswordRequest;
 import com.mirahtec.apisiraparents.dto.LoginRequest;
 import com.mirahtec.apisiraparents.dto.ResetPasswordRequest;
-import com.mirahtec.apisiraparents.service.AuthService;
+import com.mirahtec.apisiraparents.service.AuthService.IAuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/auth")
 public class AuthController {
     @Autowired
-    private AuthService authService;
+    private IAuthService authService;
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpServletRequest requestClient) {
         return authService.login(loginRequest, requestClient);

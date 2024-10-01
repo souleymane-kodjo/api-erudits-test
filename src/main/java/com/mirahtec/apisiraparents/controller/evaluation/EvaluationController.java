@@ -1,6 +1,6 @@
-package com.mirahtec.apisiraparents.controller;
+package com.mirahtec.apisiraparents.controller.evaluation;
 
-import com.mirahtec.apisiraparents.service.EvaluationService;
+import com.mirahtec.apisiraparents.service.evaluationService.EvaluationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

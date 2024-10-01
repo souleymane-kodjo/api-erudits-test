@@ -1,6 +1,5 @@
-package com.mirahtec.apisiraparents.dao.impl;
+package com.mirahtec.apisiraparents.dao.journalConnexion;
 
-import com.mirahtec.apisiraparents.dao.IJournalConnexion;
 import com.mirahtec.apisiraparents.model.JournalConnexion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

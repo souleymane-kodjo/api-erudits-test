@@ -1,7 +1,7 @@
-package com.mirahtec.apisiraparents.controller;
+package com.mirahtec.apisiraparents.controller.presence;
 
 import com.mirahtec.apisiraparents.model.Presence;
-import com.mirahtec.apisiraparents.service.PresenceService;
+import com.mirahtec.apisiraparents.service.presenceService.PresenceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,16 +44,15 @@ public class PresenceController {
         if (presences.isEmpty()  )
         {
             response.put("status", "false");
-            response.put("message", "Presences empty");
+            response.put("message", "Liste de presence vide");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
 
         if (presences.size() == 0) {
             response.put("status", "false");
-            response.put("message", "Presence size 0");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            response.put("message", "Liste de presence vide");
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
         }
         return ResponseEntity.ok(presences);
     }
-
 }

@@ -2,6 +2,7 @@ package com.mirahtec.apisiraparents.model;
 
 import com.mirahtec.apisiraparents.utils.ParserString;
 import lombok.Data;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.Serializable;
 @Data
@@ -30,8 +31,12 @@ public class Document implements Serializable {
 
     public String getNom() {
         return ParserString.parserFileName(link);
+
     }
-    public String getAnneScolaire() {
-        return "2022-2023";
+
+    public String getLink() {
+        String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
+        return baseUrl + ParserString.UriParser.parseUri(link);
     }
+
 }

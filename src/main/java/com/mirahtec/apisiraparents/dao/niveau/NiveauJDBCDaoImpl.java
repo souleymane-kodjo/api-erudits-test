@@ -1,8 +1,6 @@
-package com.mirahtec.apisiraparents.dao.impl;
+package com.mirahtec.apisiraparents.dao.niveau;
 
-import com.mirahtec.apisiraparents.dao.INiveauDao;
 import com.mirahtec.apisiraparents.model.Niveau;
-import jakarta.persistence.Access;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;

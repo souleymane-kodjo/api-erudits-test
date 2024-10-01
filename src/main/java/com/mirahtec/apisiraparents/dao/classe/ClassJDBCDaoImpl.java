@@ -1,7 +1,5 @@
-package com.mirahtec.apisiraparents.dao.impl;
+package com.mirahtec.apisiraparents.dao.classe;
 
-import com.mirahtec.apisiraparents.dao.IClassDao;
-import com.mirahtec.apisiraparents.model.Student;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -9,7 +7,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import com.mirahtec.apisiraparents.model.Class;
 
-import java.sql.SQLException;
 import java.util.List;
 
 @Component

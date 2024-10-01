@@ -1,4 +1,4 @@
-package com.mirahtec.apisiraparents.dao;
+package com.mirahtec.apisiraparents.dao.student;
 
 import com.mirahtec.apisiraparents.model.Student;
 
